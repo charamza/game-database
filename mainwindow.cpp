@@ -1,5 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QItemSelectionModel>
+#include <QDebug>
+#include <QModelIndex>
+#include <QMessageBox>
+#include <QInputDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -9,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("../GameDatabase/world.db");
     db.open();
+    qDebug() << db.lastError().driverText();
 
     locations = new QSqlTableModel(this);
     locations->setTable("location");
@@ -19,8 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->viewLocation->hideColumn(0);
     ui->viewLocation->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    sublocations->setTable("sublocation");
     sublocations = new QSqlTableModel(this);
+    sublocations->setTable("sublocation");
     sublocations->setHeaderData(2, Qt::Horizontal, "Název");
     ui->viewSublocation->setModel(sublocations);
     ui->viewSublocation->hideColumn(0);
