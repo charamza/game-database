@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSqlTableModel>
 #include <QSqlQuery>
+#include <QTableView>
 
 namespace Ui {
 class MainWindow;
@@ -22,8 +23,15 @@ private slots:
 
     void on_removeLocation_clicked();
 
+    void on_addSublocation_clicked();
+
+    void on_removeSublocation_clicked();
+
+    void on_viewLocation_clicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
+    void removeRows(QTableView* view, QSqlTableModel *model, QString tablename);
     QSqlQuery* query;
     QSqlTableModel *locations;
     QSqlTableModel *sublocations;

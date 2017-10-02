@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "locationdialog.h"
+#include "sublocationdialog.h"
 #include <QSqlError>
 #include <QItemSelectionModel>
 #include <QDebug>
@@ -56,21 +57,60 @@ void MainWindow::on_addLocation_clicked()
 
 void MainWindow::on_removeLocation_clicked()
 {
-    QItemSelectionModel *selection = ui->viewLocation->selectionModel();
+    this->removeRows(ui->viewLocation, locations, "location");
+}
+
+void MainWindow::removeRows(QTableView* view, QSqlTableModel* model, QString tablename)
+{
+    QItemSelectionModel *selection = view->selectionModel();
     if (selection->selectedRows().count() > 0) {
-        QString sql = "DELETE FROM location WHERE id IN (";
+        QString sql = "DELETE FROM " + tablename + " WHERE id IN (";
         for (int i = 0; i < selection->selectedRows().count(); i++) {
             QModelIndex index = selection->selectedRows().at(i);
             if (i != 0) {
                 sql+=", ";
             }
-            sql+= QString::number(locations->data(index).toInt());
+            sql+= QString::number(model->data(index).toInt());
         }
         sql+=")";
         query->prepare(sql);
         query->exec();
-        locations->select();
+        model->select();
     } else {
         QMessageBox::warning(this, "Chyba", "Nevybral jsi žádné prvky ke smazání.");
     }
+}
+
+void MainWindow::on_addSublocation_clicked()
+{
+    SublocationDialog dialog;
+    if (dialog.exec() == QDialog::Accepted){
+        query->prepare("INSERT INTO sublocation (location, name) VALUES (:location, :name)");
+        query->bindValue(":location", selectedLocation);
+        query->bindValue(":name", dialog.name);
+        query->exec();
+        sublocations->select();
+    }
+}
+
+void MainWindow::on_removeSublocation_clicked()
+{
+    this->removeRows(ui->viewSublocation, sublocations, "sublocation");
+}
+
+void MainWindow::on_viewLocation_clicked(const QModelIndex &index)
+{
+    QItemSelectionModel *selection = ui->viewLocation->selectionModel();
+    int count = selection->selectedRows().length();
+    if (count > 0) {
+        QModelIndex index = selection->selectedRows().at(0);
+        selectedLocation = locations->data(index).toInt();
+        QString id = QString::number(selectedLocation);
+        sublocations->setFilter("location = " + id);
+        sublocations->select();
+    } else {
+
+    }
+    /*int i = index.row();
+    */
 }
