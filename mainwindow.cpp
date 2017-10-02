@@ -1,12 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QSqlQuery>
+#include "locationdialog.h"
 #include <QSqlError>
 #include <QItemSelectionModel>
 #include <QDebug>
 #include <QModelIndex>
 #include <QMessageBox>
-#include <QInputDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,7 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("../GameDatabase/world.db");
     db.open();
-    qDebug() << db.lastError().driverText();
+
+    query = new QSqlQuery(db);
 
     locations = new QSqlTableModel(this);
     locations->setTable("location");
@@ -41,3 +41,36 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_addLocation_clicked()
+{
+    LocationDialog dialog;
+    if (dialog.exec() == QDialog::Accepted){
+        query->prepare("INSERT INTO location (name, level) VALUES (:name, :level)");
+        query->bindValue(":name", dialog.name);
+        query->bindValue(":level", dialog.level);
+        query->exec();
+        locations->select();
+    }
+}
+
+void MainWindow::on_removeLocation_clicked()
+{
+    QItemSelectionModel *selection = ui->viewLocation->selectionModel();
+    if (selection->selectedRows().count() > 0) {
+        QString sql = "DELETE FROM location WHERE id IN (";
+        for (int i = 0; i < selection->selectedRows().count(); i++) {
+            QModelIndex index = selection->selectedRows().at(i);
+            if (i != 0) {
+                sql+=", ";
+            }
+            sql+= QString::number(locations->data(index).toInt());
+        }
+        sql+=")";
+        query->prepare(sql);
+        query->exec();
+        locations->select();
+    } else {
+        QMessageBox::warning(this, "Chyba", "Nevybral jsi žádné prvky ke smazání.");
+    }
+}

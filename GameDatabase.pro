@@ -25,10 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    locationdialog.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    locationdialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    locationdialog.ui

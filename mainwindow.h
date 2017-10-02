@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QSqlTableModel>
+#include <QSqlQuery>
 
 namespace Ui {
 class MainWindow;
@@ -16,8 +17,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_addLocation_clicked();
+
+    void on_removeLocation_clicked();
+
 private:
     Ui::MainWindow *ui;
+    QSqlQuery* query;
     QSqlTableModel *locations;
     QSqlTableModel *sublocations;
     QSqlDatabase db;
