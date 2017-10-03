@@ -27,14 +27,23 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     locationdialog.cpp \
-    sublocationdialog.cpp
+    sublocationdialog.cpp \
+    creaturemanager.cpp \
+    creaturecreatedialog.cpp \
+    creaturedialog.cpp
 
 HEADERS += \
         mainwindow.h \
     locationdialog.h \
-    sublocationdialog.h
+    sublocationdialog.h \
+    creaturemanager.h \
+    creaturecreatedialog.h \
+    creaturedialog.h
 
 FORMS += \
         mainwindow.ui \
     locationdialog.ui \
-    sublocationdialog.ui
+    sublocationdialog.ui \
+    creaturemanager.ui \
+    creaturedialog.ui \
+    creaturecreatedialog.ui

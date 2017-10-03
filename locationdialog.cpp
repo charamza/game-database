@@ -23,10 +23,12 @@ void LocationDialog::accept()
 
     if (name.isEmpty()) {
         QMessageBox::warning(this, "Chyba", "Vyplň všechny údaje.");
+        return;
     }
 
     if (level == 0) {
         QMessageBox::warning(this, "Chyba", "Špatná úroveň oblasti.");
+        return;
     }
 
     QDialog::accept();

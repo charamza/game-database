@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "creaturemanager.h"
 #include "locationdialog.h"
 #include "sublocationdialog.h"
+#include "creaturedialog.h"
 #include <QSqlError>
 #include <QItemSelectionModel>
 #include <QDebug>
@@ -17,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     db.setDatabaseName("../GameDatabase/world.db");
     db.open();
 
-    query = new QSqlQuery(db);
+    query = new QSqlQuery();
 
     locations = new QSqlTableModel(this);
     locations->setTable("location");
@@ -35,6 +37,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->viewSublocation->hideColumn(0);
     ui->viewSublocation->hideColumn(1);
     ui->viewSublocation->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    creatures = new QSqlTableModel(this);
+    creatures->setTable("location_creature");
+    ui->viewCreature->setModel(creatures);
+    ui->viewCreature->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 MainWindow::~MainWindow()
@@ -106,11 +113,36 @@ void MainWindow::on_viewLocation_clicked(const QModelIndex &index)
         QModelIndex index = selection->selectedRows().at(0);
         selectedLocation = locations->data(index).toInt();
         QString id = QString::number(selectedLocation);
+
         sublocations->setFilter("location = " + id);
         sublocations->select();
+
+        creatures->setFilter("location = " + id);
+        creatures->select();
     } else {
 
     }
-    /*int i = index.row();
-    */
+}
+
+void MainWindow::on_manageCreatures_clicked()
+{
+    CreatureManager manager;
+    manager.exec();
+}
+
+void MainWindow::on_addCreature_clicked()
+{
+    CreatureDialog dialog;
+    if (dialog.exec() == QDialog::Accepted) {
+        query->prepare("INSERT INTO location_creature (location, creature) VALUES (:location, :creature)");
+        query->bindValue(":location", selectedLocation);
+        query->bindValue(":creature", dialog.creature);
+        query->exec();
+        creatures->select();
+    }
+}
+
+void MainWindow::on_removeCreature_clicked()
+{
+
 }

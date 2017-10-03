@@ -29,12 +29,19 @@ private slots:
 
     void on_viewLocation_clicked(const QModelIndex &index);
 
+    void on_manageCreatures_clicked();
+
+    void on_addCreature_clicked();
+
+    void on_removeCreature_clicked();
+
 private:
     Ui::MainWindow *ui;
     void removeRows(QTableView* view, QSqlTableModel *model, QString tablename);
     QSqlQuery* query;
     QSqlTableModel *locations;
     QSqlTableModel *sublocations;
+    QSqlTableModel *creatures;
     QSqlDatabase db;
     int selectedLocation = -1;
 };

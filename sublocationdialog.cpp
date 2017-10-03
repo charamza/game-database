@@ -20,6 +20,7 @@ void SublocationDialog::accept()
 
     if (name.isEmpty()) {
         QMessageBox::warning(this, "Chyba", "Prázdné jméno");
+        return;
     }
 
     QDialog::accept();

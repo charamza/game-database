@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>607</width>
-    <height>466</height>
+    <width>681</width>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,65 +15,10 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="0" colspan="7">
-     <widget class="QTableView" name="viewLocation"/>
-    </item>
-    <item row="1" column="6">
-     <widget class="QPushButton" name="removeLocation">
-      <property name="text">
-       <string>Odebrat oblast</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Podoblasti</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="3">
-     <widget class="QPushButton" name="removeSublocation">
-      <property name="text">
-       <string>Odebrat podoblast</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>Oblasti ve hře</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QPushButton" name="addSublocation">
-      <property name="text">
-       <string>Přidat podoblast</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="4" colspan="3">
-     <widget class="QTableView" name="tableView"/>
-    </item>
-    <item row="3" column="4">
-     <widget class="QLabel" name="label_4">
-      <property name="text">
-       <string>Příšery</string>
-      </property>
-     </widget>
-    </item>
     <item row="3" column="6">
      <widget class="QPushButton" name="removeCreature">
       <property name="text">
        <string>Odebrat stvoření</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="5">
-     <widget class="QPushButton" name="addCreature">
-      <property name="text">
-       <string>Přidat stvoření</string>
       </property>
      </widget>
     </item>
@@ -84,21 +29,12 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0" colspan="4">
-     <widget class="QTableView" name="viewSublocation"/>
-    </item>
-    <item row="1" column="1" colspan="4">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+    <item row="3" column="5">
+     <widget class="QPushButton" name="addCreature">
+      <property name="text">
+       <string>Přidat stvoření k oblasti</string>
       </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
+     </widget>
     </item>
     <item row="0" column="0" colspan="7">
      <widget class="QLabel" name="label_2">
@@ -116,6 +52,64 @@
       </property>
       <property name="margin">
        <number>10</number>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="7">
+     <widget class="QTableView" name="viewLocation"/>
+    </item>
+    <item row="1" column="6">
+     <widget class="QPushButton" name="removeLocation">
+      <property name="text">
+       <string>Odebrat oblast</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Podoblasti</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Oblasti ve hře</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0" colspan="3">
+     <widget class="QTableView" name="viewSublocation"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QPushButton" name="addSublocation">
+      <property name="text">
+       <string>Přidat podoblast</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QPushButton" name="removeSublocation">
+      <property name="text">
+       <string>Odebrat podoblast</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3" colspan="4">
+     <widget class="QTableView" name="viewCreature"/>
+    </item>
+    <item row="3" column="3">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>Příšery</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="4">
+     <widget class="QPushButton" name="manageCreatures">
+      <property name="text">
+       <string>Creature Manager</string>
       </property>
      </widget>
     </item>
