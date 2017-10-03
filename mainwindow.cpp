@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QModelIndex>
 #include <QMessageBox>
+#include <QSqlRecord>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -38,15 +39,31 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->viewSublocation->hideColumn(1);
     ui->viewSublocation->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    creatures = new QSqlTableModel(this);
-    creatures->setTable("location_creature");
-    ui->viewCreature->setModel(creatures);
-    ui->viewCreature->setSelectionBehavior(QAbstractItemView::SelectRows);
+    this->updateCreatures();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::updateCreatures()
+{
+    if (selectedLocation == -1) {
+        return;
+    }
+
+    query->prepare("SELECT location_creature.location, location_creature.creature, creature.id AS id, creature.name AS name FROM location_creature, creature WHERE location_creature.creature = creature.id AND location_creature.location = :location");
+    query->bindValue(":location", selectedLocation);
+    query->exec();
+
+    ui->viewCreature->clear();
+
+    while (query->next()) {
+        QSqlRecord record = query->record();
+        ui->viewCreature->addItem(record.value("name").toString());
+        qDebug() << record.value("name").toString();
+    }
 }
 
 
@@ -117,8 +134,7 @@ void MainWindow::on_viewLocation_clicked(const QModelIndex &index)
         sublocations->setFilter("location = " + id);
         sublocations->select();
 
-        creatures->setFilter("location = " + id);
-        creatures->select();
+        this->updateCreatures();
     } else {
 
     }
@@ -133,12 +149,13 @@ void MainWindow::on_manageCreatures_clicked()
 void MainWindow::on_addCreature_clicked()
 {
     CreatureDialog dialog;
+    dialog.setOptions(selectedLocation);
     if (dialog.exec() == QDialog::Accepted) {
         query->prepare("INSERT INTO location_creature (location, creature) VALUES (:location, :creature)");
         query->bindValue(":location", selectedLocation);
         query->bindValue(":creature", dialog.creature);
         query->exec();
-        creatures->select();
+        this->updateCreatures();
     }
 }
 

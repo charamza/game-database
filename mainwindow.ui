@@ -96,9 +96,6 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="3" colspan="4">
-     <widget class="QTableView" name="viewCreature"/>
-    </item>
     <item row="3" column="3">
      <widget class="QLabel" name="label_4">
       <property name="text">
@@ -112,6 +109,9 @@
        <string>Creature Manager</string>
       </property>
      </widget>
+    </item>
+    <item row="4" column="3" colspan="4">
+     <widget class="QListWidget" name="viewCreature"/>
     </item>
    </layout>
   </widget>

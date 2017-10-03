@@ -15,6 +15,8 @@ public:
     explicit CreatureDialog(QWidget *parent = 0);
     ~CreatureDialog();
 
+    void setOptions(int location);
+
     int creature;
 
 public slots:

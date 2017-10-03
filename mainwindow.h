@@ -18,6 +18,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void updateCreatures();
+
 private slots:
     void on_addLocation_clicked();
 
