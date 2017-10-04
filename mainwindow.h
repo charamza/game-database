@@ -19,6 +19,8 @@ public:
     ~MainWindow();
 
     void updateCreatures();
+    void lockSubbuttons();
+    void unlockSubbuttons();
 
 private slots:
     void on_addLocation_clicked();

@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->viewSublocation->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     this->updateCreatures();
+    this->lockSubbuttons();
 }
 
 MainWindow::~MainWindow()
@@ -62,8 +63,23 @@ void MainWindow::updateCreatures()
     while (query->next()) {
         QSqlRecord record = query->record();
         ui->viewCreature->addItem(record.value("name").toString());
-        qDebug() << record.value("name").toString();
     }
+}
+
+void MainWindow::lockSubbuttons()
+{
+    ui->addCreature->setDisabled(true);
+    ui->removeCreature->setDisabled(true);
+    ui->addSublocation->setDisabled(true);
+    ui->removeSublocation->setDisabled(true);
+}
+
+void MainWindow::unlockSubbuttons()
+{
+    ui->addCreature->setDisabled(false);
+    ui->removeCreature->setDisabled(false);
+    ui->addSublocation->setDisabled(false);
+    ui->removeSublocation->setDisabled(false);
 }
 
 
@@ -135,6 +151,7 @@ void MainWindow::on_viewLocation_clicked(const QModelIndex &index)
         sublocations->select();
 
         this->updateCreatures();
+        this->unlockSubbuttons();
     } else {
 
     }
