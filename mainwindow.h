@@ -45,7 +45,7 @@ private:
     QSqlQuery* query;
     QSqlTableModel *locations;
     QSqlTableModel *sublocations;
-    QSqlTableModel *creatures;
+    QList<int> *creaturesData;
     QSqlDatabase db;
     int selectedLocation = -1;
 };

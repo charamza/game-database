@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     db.open();
 
     query = new QSqlQuery();
+    creaturesData = new QList<int>();
 
     locations = new QSqlTableModel(this);
     locations->setTable("location");
@@ -54,6 +55,8 @@ void MainWindow::updateCreatures()
         return;
     }
 
+    creaturesData = new QList<int>();
+
     query->prepare("SELECT location_creature.location, location_creature.creature, creature.id AS id, creature.name AS name FROM location_creature, creature WHERE location_creature.creature = creature.id AND location_creature.location = :location");
     query->bindValue(":location", selectedLocation);
     query->exec();
@@ -63,6 +66,7 @@ void MainWindow::updateCreatures()
     while (query->next()) {
         QSqlRecord record = query->record();
         ui->viewCreature->addItem(record.value("name").toString());
+        creaturesData->append(record.value("id").toInt());
     }
 }
 
@@ -178,5 +182,16 @@ void MainWindow::on_addCreature_clicked()
 
 void MainWindow::on_removeCreature_clicked()
 {
-
+    QItemSelectionModel *selection = ui->viewCreature->selectionModel();
+    int count = selection->selectedRows().length();
+    if (count > 0) {
+        query->prepare("DELETE FROM location_creature WHERE location = :location AND creature = :creature");
+        QModelIndex index = selection->selectedRows().at(0);
+        query->bindValue(":location", selectedLocation);
+        query->bindValue(":creature", creaturesData->at(index.row()));
+        query->exec();
+        updateCreatures();
+    } else {
+        QMessageBox::warning(this, "Chyba", "Nevybral jsi žádnou kreaturu ke smazání.");
+    }
 }
