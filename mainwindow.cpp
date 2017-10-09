@@ -17,11 +17,20 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("../GameDatabase/world.db");
+    db.setDatabaseName("world.db");
     db.open();
 
     query = new QSqlQuery();
     creaturesData = new QList<int>();
+
+    query->prepare("CREATE TABLE IF NOT EXISTS `creature` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `golds` INTEGER, `experiences` INTEGER )");
+    query->exec();
+    query->prepare("CREATE TABLE IF NOT EXISTS `location` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `level` INTEGER NOT NULL )");
+    query->exec();
+    query->prepare("CREATE TABLE IF NOT EXISTS `location_creature` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `location` INTEGER, `creature` INTEGER )");
+    query->exec();
+    query->prepare("CREATE TABLE IF NOT EXISTS `sublocation` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `location` INTEGER, `name` TEXT )");
+    query->exec();
 
     locations = new QSqlTableModel(this);
     locations->setTable("location");
